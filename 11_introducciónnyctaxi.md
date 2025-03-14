@@ -42,33 +42,132 @@ El dataset público de taxis de Nueva York contiene información detallada sobre
 - **Veracidad:** Puede contener errores, datos faltantes o inconsistentes.
 - **Valor:** Útil para análisis predictivos, optimización de tarifas, rutas, y análisis del comportamiento de usuarios.
 
-### 🔹 **Ejemplo básico de carga de datos en R/Spark:**
+---
 
-Veamos cómo conectar R con Apache Spark y cargar inicialmente el dataset de taxis de NYC (enero 2023):
+## 🔹 **Descripción del Dataset**
+
+Este dataset es ofrecido públicamente por la [New York City Taxi and Limousine Commission (TLC)](https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page), que regula y publica información mensual sobre millones de viajes realizados por taxis amarillos en la ciudad de Nueva York.
+
+El dataset incluye información de cada viaje realizado, como:
+
+- **pickup_datetime y dropoff_datetime**: fecha y hora de inicio y fin del viaje.
+- **pickup y drop-off locations**: ubicaciones geográficas de recogida y llegada.
+- **passenger_count**: Número de pasajeros.
+- **trip_distance**: Distancia recorrida durante el viaje (en millas).
+- **fare_amount**: Tarifa básica del viaje.
+- **tip_amount**: Cantidad de propina dada por el cliente.
+- **payment_type**: Tipo de pago (efectivo, tarjeta, etc.).
+
+---
+
+## 🔹 **¿Por qué utilizamos este dataset?**
+
+El dataset cumple con las características principales del Big Data:
+
+- **Volumen**: Millones de registros (entre 8-10 millones por mes aproximadamente).
+- **Velocidad**: Generación continua mensual (actualización constante).
+- **Variedad**: Incluye datos estructurados, y adicionalmente podemos complementarlo con datos semi-estructurados o no estructurados (comentarios de usuarios, eventos externos, etc.).
+- **Veracidad**: Ofrece datos públicos regulados y fiables, aunque siempre puede requerir tareas adicionales de limpieza.
+
+---
+
+## 🔹 **Enlace para descargar los datos (ejemplo mes de Enero 2023)**
+
+Puedes descargar el dataset de taxis de Enero de 2023 desde aquí en formato Parquet (formato eficiente para Big Data):
+
+- 🔗 [Yellow Taxi Trip Data – Enero 2023 (Parquet)](https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-01.parquet)
+
+*Nota*: Mensualmente se actualiza el dataset en la página oficial de la TLC [enlace oficial aquí](https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page).
+
+Puedes descargar el dataset completo directamente desde:
+
+- Página oficial de TLC NYC:
+    https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page
+
+- Enlaces directos para el curso (Enero 2023):
+  - Formato CSV (~600 MB): https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-01.csv
+  - Formato Parquet (~150 MB, comprimido y eficiente para Big Data): https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-01.parquet
+
+
+---
+
+## 🔹 **Acceso inicial con R y Apache Spark (sparklyr)**
+
+Veamos cómo cargar rápidamente estos datos en Spark usando **`sparklyr` desde R**:
 
 ```r
-# Cargar las librerías necesarias
+# Cargar librerías
 library(sparklyr)
 library(dplyr)
 
-# Iniciar conexión local con Spark
+# Conexión a Apache Spark local
 sc <- spark_connect(master = "local")
 
-# Leer datos del dataset público (en formato Parquet, muy común en Big Data)
-taxis_nyc <- spark_read_parquet(
-  sc,
-  name = "taxis_nyc",
-  path = "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-01.parquet"
-)
+# Cargar el dataset de taxis NYC desde URL (parquet)
+taxi_nyc <- spark_read_parquet(sc, 
+                               name = "taxi_nyc",
+                               path = "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-01.parquet")
 
-# Ver estructura básica de los datos
-taxis_nyc %>% glimpse()
+# Mostrar estructura básica
+glimpse(taxi_nyc)
 
-# Consultar algunos registros
-taxis_nyc %>% head(5)
+# Visualizar primeras filas
+head(taxi_nyc)
 ```
 
-Este sencillo ejemplo ya nos muestra el manejo inicial de grandes volúmenes de datos usando herramientas especializadas para Big Data (Spark).
+---
+
+## 🔹 **Ejemplos prácticos y usos empresariales reales del dataset**
+
+Este dataset se utiliza frecuentemente en entornos empresariales para:
+
+- **Predecir demanda en transporte urbano**: Ajustar dinámicamente precios según demanda y horario.
+- **Analizar patrones de tráfico**: Optimizar rutas, mejorando tiempos de trayecto y disminuyendo costos operativos.
+- **Identificar clientes más rentables**: Perfilamiento para programas de fidelización y marketing dirigido.
+- **Detección de anomalías**: Fraudes, viajes irregulares, posibles errores en tarifas, etc.
+
+---
+
+## 🔹 **Código de exploración básica inicial en R/Spark**
+
+A continuación, exploramos de forma básica algunos aspectos fundamentales del dataset:
+
+```r
+# Número total de registros
+taxi_nyc %>% summarise(total_viajes = n()) %>% collect()
+
+# Campos (columnas) disponibles
+colnames(taxi_nyc)
+
+# Muestra inicial del dataset
+taxi_nyc %>% head(10) %>% collect()
+```
+
+---
+
+## 🔹 **Ejercicios iniciales sugeridos a los alumnos**
+
+Estos ejercicios permiten comenzar la familiarización inicial con el dataset:
+
+**Ejercicio 1:**  
+- Cargar datos usando sparklyr (ver sección previa)
+- Explorar columnas y tipos de datos
+
+```r
+taxi_nyc %>% glimpse()
+```
+
+**Ejercicio 2:**  
+- Determinar tarifa promedio, propina promedio y distancia promedio de todos los viajes.
+
+```r
+taxi_nyc %>% summarise(
+  tarifa_media = mean(fare_amount, na.rm=TRUE),
+  propina_media = mean(tip_amount, na.rm=TRUE),
+  distancia_media = mean(trip_distance, na.rm=TRUE)
+) %>% collect()
+```
+
 
 ---
 
