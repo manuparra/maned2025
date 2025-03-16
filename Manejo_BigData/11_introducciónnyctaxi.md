@@ -286,6 +286,201 @@ datos_temporales %>%
 
 ---
 
+# 🚀 **Funciones Clave para la Gestión de Memoria y el Procesamiento Distribuido en Apache Spark con `sparklyr`**
+
+Cuando trabajamos con grandes volúmenes de datos en **Apache Spark**, una gestión eficiente de la memoria es crucial para garantizar el rendimiento y evitar errores por falta de recursos. Además, comprender las funciones clave para el **procesamiento distribuido** en Spark ayuda a optimizar los flujos de trabajo y aprovechar al máximo su arquitectura escalable.
+
+En esta guía, te mostraré las principales funciones que optimizan el uso de memoria, el manejo de datos en entornos distribuidos y la mejora del rendimiento en Spark usando **`sparklyr`** en R.
+
+---
+
+## 🔹 **1. `compute()` – Crear un Dataset Temporal en Spark**
+La función **`compute()`** es una alternativa eficiente a `collect()` cuando se necesita almacenar un dataset temporal dentro de Spark sin mover los datos al entorno local de R.
+
+### 🔎 **¿Por qué usar `compute()`?**
+✅ Permite guardar el resultado de una operación en memoria dentro del clúster de Spark.  
+✅ Evita la transferencia de datos masivos a R.  
+✅ Útil cuando se desean reutilizar resultados en varias operaciones posteriores.  
+
+### 🔎 **Ejemplo de uso**
+```r
+# Crear un dataset temporal en Spark
+datos_temporales <- taxi_nyc %>%
+  filter(fare_amount > 20) %>%
+  compute(name = "datos_temporales")
+
+# Consultar los registros directamente en Spark
+datos_temporales %>%
+  summarise(total_viajes = n()) %>%
+  collect()
+```
+
+---
+
+## 🔹 **2. `persist()` – Persistir Datos en Memoria o Disco**
+La función **`persist()`** permite almacenar datos en memoria (RAM), en disco o en ambos. Es ideal para almacenar datasets intermedios que se reutilizarán varias veces.
+
+### 🔎 **¿Por qué usar `persist()`?**
+✅ Mejora el rendimiento evitando que Spark tenga que recalcular datos repetidamente.  
+✅ Se puede elegir el nivel de almacenamiento:  
+
+- **`"MEMORY_ONLY"`** → Almacena solo en memoria (rápido, pero puede agotar recursos).  
+- **`"MEMORY_AND_DISK"`** → Combina memoria y disco (recomendado para datasets grandes).  
+- **`"DISK_ONLY"`** → Almacena solo en disco (menos eficiente pero seguro).
+
+### 🔎 **Ejemplo de uso**
+```r
+# Persistir los datos en memoria para optimizar su reutilización
+taxi_nyc %>%
+  filter(trip_distance > 5) %>%
+  persist("MEMORY_AND_DISK")
+```
+
+---
+
+## 🔹 **3. `cache()` – Almacenar Datos en Memoria**
+La función **`cache()`** es similar a `persist()` pero más sencilla. Se recomienda para almacenar datos en memoria que se reutilizarán varias veces durante la sesión de Spark.
+
+### 🔎 **¿Por qué usar `cache()`?**
+✅ Almacena los datos en memoria RAM para una recuperación rápida.  
+✅ Útil para conjuntos de datos que se consultarán repetidamente.  
+✅ **No es configurable**, por lo que se almacena exclusivamente en memoria.  
+
+> ⚠️ Si el dataset es muy grande, **`cache()`** puede agotar la memoria del clúster.  
+
+### 🔎 **Ejemplo de uso**
+```r
+# Cachear un dataset en memoria
+taxi_nyc %>%
+  filter(fare_amount > 20) %>%
+  cache()
+```
+
+---
+
+## 🔹 **4. `unpersist()` – Liberar Memoria en Spark**
+La función **`unpersist()`** se utiliza para **liberar los datos almacenados en memoria** o en disco mediante `persist()` o `cache()`.
+
+### 🔎 **¿Por qué usar `unpersist()`?**
+✅ Es importante liberar los datos cuando ya no se necesiten para evitar problemas de memoria.  
+✅ Permite liberar la memoria manualmente en lugar de depender del recolector de basura automático.
+
+### 🔎 **Ejemplo de uso**
+```r
+# Eliminar un dataset almacenado en memoria para liberar recursos
+taxi_nyc %>%
+  unpersist()
+```
+
+---
+
+## 🔹 **5. `repartition()` – Optimizar el Particionado de Datos**
+La función **`repartition()`** se utiliza para **redistribuir** los datos en un número específico de particiones dentro del clúster de Spark.
+
+### 🔎 **¿Por qué usar `repartition()`?**
+✅ Permite mejorar la **paralelización** de las tareas en Spark.  
+✅ Es especialmente útil cuando se detectan **particiones desbalanceadas**.  
+✅ Recomendado para preparar los datos antes de realizar grandes agregaciones o joins.  
+
+> ⚠️ **`repartition()`** reorganiza los datos completamente, lo que puede consumir tiempo si se utiliza en exceso.
+
+### 🔎 **Ejemplo de uso**
+```r
+# Redistribuir el dataset en 200 particiones
+taxi_nyc <- taxi_nyc %>%
+  repartition(200)
+```
+
+---
+
+## 🔹 **6. `coalesce()` – Reducir el Número de Particiones**
+La función **`coalesce()`** se utiliza para reducir el número de particiones en Spark sin reorganizar completamente los datos. Es más eficiente que `repartition()` para este fin.
+
+### 🔎 **¿Por qué usar `coalesce()`?**
+✅ Menos costosa que `repartition()` porque no redistribuye los datos de forma completa.  
+✅ Ideal cuando se desea reducir el número de particiones después de una operación de filtrado o agregación.
+
+### 🔎 **Ejemplo de uso**
+```r
+# Reducir el número de particiones de 200 a 50
+taxi_nyc <- taxi_nyc %>%
+  coalesce(50)
+```
+
+---
+
+## 🔹 **7. `group_by()` + `summarise()` – Agregación Eficiente**
+El uso combinado de **`group_by()`** y **`summarise()`** permite realizar agregaciones directamente en Spark de forma eficiente.
+
+### 🔎 **¿Por qué usar esta combinación?**
+✅ Permite realizar cálculos directamente en el entorno distribuido.  
+✅ Evita mover grandes volúmenes de datos al entorno local.  
+
+### 🔎 **Ejemplo de uso**
+```r
+# Calcular la tarifa promedio por tipo de pago en Spark
+tarifa_promedio <- taxi_nyc %>%
+  group_by(payment_type) %>%
+  summarise(tarifa_media = mean(fare_amount, na.rm = TRUE)) %>%
+  collect()
+```
+
+---
+
+## 🔹 **8. `distinct()` – Eliminar Duplicados en Spark**
+La función **`distinct()`** permite identificar y eliminar registros duplicados directamente en el entorno distribuido de Spark.
+
+### 🔎 **¿Por qué usar `distinct()`?**
+✅ Optimiza el rendimiento eliminando duplicados directamente en el clúster.  
+✅ Es más eficiente que `unique()` cuando se trabaja con grandes volúmenes de datos.  
+
+### 🔎 **Ejemplo de uso**
+```r
+# Eliminar duplicados en el dataset
+datos_limpios <- taxi_nyc %>%
+  distinct(pickup_datetime, dropoff_datetime, trip_distance)
+```
+
+---
+
+## 🔹 **9. `explain()` – Análisis del Plan de Ejecución**
+La función **`explain()`** permite analizar cómo Spark está ejecutando una consulta.
+
+### 🔎 **¿Por qué usar `explain()`?**
+✅ Permite identificar posibles problemas de rendimiento.  
+✅ Muestra el **plan de ejecución** que Spark está utilizando.  
+✅ Útil para optimizar el flujo de trabajo en Spark.  
+
+### 🔎 **Ejemplo de uso**
+```r
+# Visualizar el plan de ejecución para identificar problemas de rendimiento
+taxi_nyc %>%
+  filter(fare_amount > 50) %>%
+  explain()
+```
+
+---
+
+## 🔹 **10. `sdf_sample()` – Muestreo Eficiente en Spark**
+La función **`sdf_sample()`** permite extraer muestras representativas de grandes volúmenes de datos directamente en Spark.
+
+### 🔎 **¿Por qué usar `sdf_sample()`?**
+✅ Permite explorar datos sin cargar todo el conjunto en memoria.  
+✅ Ideal para realizar análisis exploratorio en conjuntos masivos.  
+
+### 🔎 **Ejemplo de uso**
+```r
+# Extraer una muestra del 10% del dataset
+muestra <- taxi_nyc %>%
+  sdf_sample(fraction = 0.1) %>%
+  collect()
+
+head(muestra)
+```
+
+
+---
+
 ## 🔹 **Código de exploración básica inicial en R/Spark**
 
 A continuación, exploramos de forma básica algunos aspectos fundamentales del dataset:
