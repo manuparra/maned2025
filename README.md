@@ -6,6 +6,8 @@ Big Data y procesamiento paralelo
 
 ## ¿Qué es el Big Data? Herramientas y plataformas para trabajar con Big Data
 
+Lista de contenido de la sección:
+
 - [Introducción al Big Data](Introducción_BigData/001_introduccionbigdata.md) - Conceptos básicos sobre Big Data, sus aplicaciones y relevancia en el ámbito tecnológico.
 - [Instalación Inicial](Introducción_BigData/00_instalación.md) - Pasos para realizar la instalación básica de herramientas y entornos relacionados con Big Data.
 - [Completar la Instalación](Introducción_BigData/01_completarinstalación.md) - Recomendaciones y configuraciones adicionales para completar correctamente la instalación del entorno.
