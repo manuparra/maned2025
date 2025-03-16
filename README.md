@@ -1,12 +1,8 @@
 # Experto en Analista de Datos
 
-Módulo 6: Métodos avanzados: Deep Learning, Big Data y aplicaciones 
+Módulo 6: Métodos avanzados: Deep Learning, Big Data y aplicaciones. Big Data y procesamiento paralelo.
 
-Big Data y procesamiento paralelo
-
-## ¿Qué es el Big Data? Herramientas y plataformas para trabajar con Big Data
-
-Lista de contenido de la sección:
+## Introducción a Big Data
 
 - [Introducción al Big Data](Introducción_BigData/001_introduccionbigdata.md) - Conceptos básicos sobre Big Data, sus aplicaciones y relevancia en el ámbito tecnológico.
 - [Instalación Inicial](Introducción_BigData/00_instalación.md) - Pasos para realizar la instalación básica de herramientas y entornos relacionados con Big Data.
@@ -21,8 +17,6 @@ Lista de contenido de la sección:
   - Herramientas para empresa y finanzas: https://github.com/manuparra/bigdata-digital-business/tree/main?tab=readme-ov-file#big-data-technologies-and-tools-for-business-and-finance
   - Aplicaciones para empresa y finanzas: https://github.com/manuparra/bigdata-digital-business/tree/main?tab=readme-ov-file#big-data-applications-in-business-and-finance
   - El futuro del Big Data en empresa y finanzas: https://github.com/manuparra/bigdata-digital-business/tree/main?tab=readme-ov-file#future-of-big-data-in-business-and-finance
-
-
 
 ## Manejo de datos en entornos Big Data
 
