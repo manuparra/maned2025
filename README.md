@@ -1,4 +1,3 @@
-
 # Experto en Analista de Datos
 
 Módulo 6: Métodos avanzados: Deep Learning, Big Data y aplicaciones 
@@ -20,7 +19,7 @@ Módulo 6: Métodos avanzados: Deep Learning, Big Data y aplicaciones
   - Herramientas para empresa y finanzas: https://github.com/manuparra/bigdata-digital-business/tree/main?tab=readme-ov-file#big-data-technologies-and-tools-for-business-and-finance
   - Aplicaciones para empresa y finanzas: https://github.com/manuparra/bigdata-digital-business/tree/main?tab=readme-ov-file#big-data-applications-in-business-and-finance
   - El futuro del Big Data en empresa y finanzas: https://github.com/manuparra/bigdata-digital-business/tree/main?tab=readme-ov-file#future-of-big-data-in-business-and-finance
-- 
+
 
 
 ### Manejo de datos en entornos Big Data
