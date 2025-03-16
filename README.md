@@ -5,8 +5,6 @@ Módulo 6: Métodos avanzados: Deep Learning, Big Data y aplicaciones
 
 ## II.- BIG DATA Y PROCESAMIENTO PARALELO DE DATOS
 
-Profesor: Dr. Manuel J. Parra-Royón
-
 ### Tema 6.4.- ¿Qué es el Big Data? Herramientas y plataformas para trabajar con Big Data
 
 - [Introducción al Big Data](Introducción_BigData/001_introduccionbigdata.md) - Conceptos básicos sobre Big Data, sus aplicaciones y relevancia en el ámbito tecnológico.
