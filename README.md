@@ -2,9 +2,9 @@
 
 Módulo 6: Métodos avanzados: Deep Learning, Big Data y aplicaciones 
 
-## Big Data y procesamiento paralelo
+Big Data y procesamiento paralelo
 
-### ¿Qué es el Big Data? Herramientas y plataformas para trabajar con Big Data
+## ¿Qué es el Big Data? Herramientas y plataformas para trabajar con Big Data
 
 - [Introducción al Big Data](Introducción_BigData/001_introduccionbigdata.md) - Conceptos básicos sobre Big Data, sus aplicaciones y relevancia en el ámbito tecnológico.
 - [Instalación Inicial](Introducción_BigData/00_instalación.md) - Pasos para realizar la instalación básica de herramientas y entornos relacionados con Big Data.
@@ -22,7 +22,7 @@ Módulo 6: Métodos avanzados: Deep Learning, Big Data y aplicaciones
 
 
 
-### Manejo de datos en entornos Big Data
+## Manejo de datos en entornos Big Data
 
 - [Introducción al Manejo de Big Data](Manejo_BigData/10_introducciónmanejobigdata.md) - Conceptos fundamentales sobre el manejo y manipulación de grandes volúmenes de datos.
 - [Introducción al Caso NYC Taxi](Manejo_BigData/11_introducciónnyctaxi.md) - Ejemplo práctico basado en el conjunto de datos de NYC Taxi para demostrar técnicas de manejo de datos.
@@ -33,10 +33,10 @@ Módulo 6: Métodos avanzados: Deep Learning, Big Data y aplicaciones
 - [Seguridad, Gobernanza y Privacidad](Manejo_BigData/16_seguridadgobernanzaprivacidad.md) - Principales estrategias para proteger los datos y garantizar la privacidad en entornos de Big Data.
 
 
-### Visualización de datos en entornos Big Data
+## Visualización de datos en entornos Big Data
 
 - [Visualización en BigData](Visualización_BigData/20_visualización.md) - Visualización de grandes datos con herramientas de Big Data.
 
-### Machine learning con Big Data
+## Machine learning con Big Data
 
 - TBC
