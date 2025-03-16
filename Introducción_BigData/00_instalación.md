@@ -94,3 +94,73 @@ jupyter lab
 Se abrirá una ventana en el navegador. Para usar R, selecciona **Nuevo cuaderno** y elige **R** como kernel.  
 
 Con esto, ya tienes un entorno completo con R, RStudio y JupyterLab listo para trabajar. 🚀
+
+## **Instalación de R, RStudio y JupyterLab con `conda`**
+
+Este método utiliza `conda`, que facilita la gestión de entornos y dependencias.  
+
+### **1. Instalar Miniconda o Anaconda**
+- Descarga e instala Miniconda desde: [https://docs.conda.io/en/latest/miniconda.html](https://docs.conda.io/en/latest/miniconda.html)  
+- Durante la instalación, selecciona la opción para añadir `conda` al PATH.  
+
+Verifica la instalación ejecutando:  
+```sh
+conda --version
+```
+
+---
+
+### **2. Crear un entorno con R y JupyterLab**
+Crea un entorno específico para trabajar con R:  
+```sh
+conda create -n r_env r-essentials r-base jupyterlab
+```
+
+Activa el entorno recién creado:  
+```sh
+conda activate r_env
+```
+
+---
+
+### **3. Instalar el Kernel de R**
+Dentro del entorno activado, instala el paquete `IRKernel`:  
+```r
+R
+```
+Luego, dentro de la consola de R, ejecuta:  
+```r
+install.packages("IRKernel")
+IRKernel::installspec(user = TRUE)
+q()
+```
+
+---
+
+### **4. Ejecutar JupyterLab**
+Inicia JupyterLab desde la terminal:  
+```sh
+jupyter lab
+```
+
+En JupyterLab, selecciona **Nuevo cuaderno** y elige **R** como kernel.  
+
+---
+
+### **5. Instalar RStudio (Opcional)**
+Si deseas usar RStudio junto con `conda`, puedes instalarlo así:  
+```sh
+conda install -c conda-forge rstudio
+```
+
+Con estos pasos tendrás un entorno robusto para trabajar con R, RStudio y JupyterLab. 🚀
+
+## R y Google Colab
+
+Usamos esta plantilla para el Google Colab:
+
+https://colab.research.google.com/drive/1uzTGGPnd_UAB8yqgQPI7BfEeiURkLPto?usp=sharing
+
+- 16 cores
+- 32 GB RAM
+

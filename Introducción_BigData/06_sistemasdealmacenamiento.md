@@ -314,3 +314,87 @@ head(datos_delta)
 | Feather | ⚠️ Medio-Alto | 🚀 Muy Alto       | Análisis rápido (R-Python) | ❌ Indirecta |
 | Delta Lake | ✅ Alta | 🚀 Muy Alto (versionado)| Data lakes avanzados | ✅ Completa |
 
+
+## 🔷 Herramientas de Procesamiento de Datos en Streaming
+
+Las herramientas de procesamiento de datos en streaming son tecnologías de software que permiten el procesamiento y análisis de flujos de datos en tiempo real. Estas herramientas permiten que las empresas obtengan información y tomen decisiones a medida que se generan los datos, en lugar de esperar a que se recopilen y almacenen.
+
+El procesamiento de datos en streaming generalmente utiliza sistemas de computación distribuida, donde los datos se procesan en múltiples nodos dentro de un clúster. Esto garantiza un procesamiento de alto rendimiento y una alta escalabilidad.
+
+### 🔹 Principales herramientas para el procesamiento de datos en streaming
+
+Existen diversas herramientas diseñadas para manejar datos en tiempo real. A continuación se presentan algunas de las más populares:
+
+#### 🟠 Apache Kafka
+
+Kafka es una plataforma de streaming distribuida que permite el procesamiento de flujos de datos en tiempo real.
+
+✅ Está diseñado para manejar grandes volúmenes de datos de manera escalable y tolerante a fallos.
+✅ Kafka es ampliamente utilizado para casos de uso como monitorización en tiempo real, procesamiento de logs, análisis de transacciones financieras y más.
+
+Ejemplo de caso de uso:
+
+    Empresas de telecomunicaciones utilizan Kafka para detectar interrupciones en la red en tiempo real.
+    Plataformas de comercio electrónico lo emplean para rastrear eventos de usuario en su web.
+
+#### 🟠 Apache Flink
+
+Apache Flink es un marco de procesamiento de datos de código abierto que admite tanto el procesamiento en batch como el procesamiento en streaming.
+
+✅ Proporciona APIs avanzadas para la creación de aplicaciones de streaming.
+✅ Flink se destaca por su capacidad para manejar datos a altas velocidades con una latencia muy baja.
+✅ Permite realizar análisis complejos en tiempo real, como la detección de anomalías o el seguimiento de patrones de comportamiento.
+
+Ejemplo de caso de uso:
+
+    Flink se utiliza en el sector financiero para detectar patrones de fraude en tiempo real.
+
+#### 🟠 Apache Storm
+
+Apache Storm es un sistema distribuido para el procesamiento de flujos de datos a gran escala en tiempo real.
+
+✅ Ofrece un modelo de programación flexible para la construcción de flujos de datos complejos.
+✅ Diseñado para ser escalable y tolerante a fallos, lo que garantiza la continuidad del procesamiento incluso en caso de errores en los nodos del clúster.
+
+Ejemplo de caso de uso:
+
+    Storm se emplea para analizar datos de redes sociales en tiempo real y detectar tendencias emergentes.
+
+#### 🟠 AWS Kinesis
+
+Amazon Kinesis es una plataforma en la nube para el procesamiento de flujos de datos en tiempo real a gran escala.
+
+✅ Permite la ingestión, el procesamiento y el análisis de datos en tiempo real.
+✅ Se integra fácilmente con otros servicios de AWS para construir aplicaciones completas de streaming.
+✅ Es ideal para flujos de datos procedentes de dispositivos IoT, registros de aplicaciones web o sistemas de monitorización en la nube.
+
+Ejemplo de caso de uso:
+
+    Kinesis se utiliza para procesar flujos de datos de sensores en tiempo real, lo que permite controlar maquinaria industrial o sistemas de climatización inteligente.
+
+#### 🟠 Google Cloud Dataflow
+
+Google Cloud Dataflow es un servicio totalmente gestionado que admite tanto el procesamiento por lotes como el procesamiento en streaming de conjuntos de datos a gran escala.
+
+✅ Soporta múltiples lenguajes de programación como Java, Python, y Scala.
+✅ Ofrece una interfaz visual que facilita la creación, gestión y monitorización de pipelines de datos.
+✅ Su arquitectura escalable le permite manejar enormes cantidades de datos con una latencia mínima.
+
+Ejemplo de caso de uso:
+
+    Dataflow se utiliza para procesar datos de registros en tiempo real y alimentar sistemas de alerta temprana ante fallos en servidores.
+
+### 🔹 Comparación de Herramientas de Procesamiento en Streaming
+Herramienta	Características clave	Escalabilidad	Tolerancia a fallos	Integración con la nube
+Apache Kafka	Plataforma robusta para ingesta de datos en tiempo real	⭐⭐⭐⭐⭐	✅ Alta	❌ No gestionado
+Apache Flink	Procesamiento rápido y de baja latencia con potente API	⭐⭐⭐⭐	✅ Alta	❌ No gestionado
+Apache Storm	Flexible, diseñado para flujos de datos complejos	⭐⭐⭐⭐	✅ Alta	❌ No gestionado
+AWS Kinesis	Integración con el ecosistema de Amazon Web Services	⭐⭐⭐⭐	✅ Alta	✅ Gestionado
+Google Dataflow	Gestión visual de pipelines de datos en la nube	⭐⭐⭐⭐⭐	✅ Alta	✅ Gestionado
+
+Muy usadas en:
+
+- ✅ Finanzas (detección de fraudes en tiempo real)
+- ✅ Telecomunicaciones (monitorización de redes)
+- ✅ E-commerce (análisis de comportamiento del cliente)
+- ✅ IoT (gestión de datos de sensores en tiempo real)
