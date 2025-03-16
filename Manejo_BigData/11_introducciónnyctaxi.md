@@ -128,6 +128,164 @@ Este dataset se utiliza frecuentemente en entornos empresariales para:
 
 ---
 
+# 🔎 **`collect()` en Apache Spark con `sparklyr` en R**  
+
+El método **`collect()`** es una función **clave** en el ecosistema de **Apache Spark**, especialmente en el contexto del análisis de datos masivos utilizando R y la librería **`sparklyr`**. Su uso es crucial para entender cómo se manejan los datos en entornos distribuidos.
+
+---
+
+## 🔹 **¿Qué es `collect()`?**  
+En Apache Spark, el método **`collect()`** se utiliza para **extraer datos desde un clúster de Spark hacia el entorno local de R**. En otras palabras, **`collect()`** convierte los datos almacenados en Spark (en un entorno distribuido) en un **data frame** estándar de R, permitiendo su manipulación, análisis y visualización dentro de R.
+
+---
+
+## 🔹 **¿Por qué se necesita `collect()` en Spark?**
+
+El diseño de **Spark** se basa en el principio de **computación distribuida**, lo que significa que los datos se encuentran repartidos en múltiples nodos del clúster.  
+
+Por esta razón:  
+✅ Cuando ejecutas una operación en Spark (como `filter()`, `group_by()`, etc.), el resultado se mantiene en el entorno de Spark y **no se transfiere automáticamente** a R.  
+✅ La función **`collect()`** se usa para **transferir los resultados a la memoria local** en R.  
+
+---
+
+## 🔹 **¿Cómo funciona `collect()`?**
+
+La función **`collect()`** realiza lo siguiente:
+
+✅ Envía una solicitud a Spark para recopilar los resultados de todas las particiones del clúster.  
+✅ Los datos se trasladan al entorno local de R como un **data frame estándar**.  
+✅ Es ideal para obtener subconjuntos de datos pequeños o resultados finales que puedan analizarse directamente en R.  
+
+> ⚠️ **¡Importante!**  
+> Dado que `collect()` transfiere los datos completos a la memoria local, no es recomendable para conjuntos de datos muy grandes, ya que puede agotar la memoria del sistema.
+
+---
+
+## 🔹 **Sintaxis básica de `collect()`**
+```r
+library(sparklyr)
+library(dplyr)
+
+# Conectar a Spark
+sc <- spark_connect(master = "local")
+
+# Cargar un dataset en Spark
+taxi_nyc <- spark_read_parquet(sc, name = "taxi_nyc", path = "hdfs://ruta/dataset.parquet")
+
+# Filtrar los datos y luego recogerlos en R
+datos_filtrados <- taxi_nyc %>%
+  filter(fare_amount > 10) %>%
+  select(pickup_datetime, fare_amount) %>%
+  collect()
+
+# Ver el resultado
+head(datos_filtrados)
+```
+
+---
+
+## 🔹 **Ejemplos Prácticos de `collect()`**
+
+### 📋 **1. Obtener un subconjunto de datos**
+El uso más común de `collect()` es extraer un pequeño subconjunto de datos para su inspección.
+
+```r
+# Obtener 100 registros aleatorios del dataset
+sample_data <- taxi_nyc %>%
+  sample_n(100) %>%
+  collect()
+
+# Visualización rápida
+head(sample_data)
+```
+
+---
+
+### 📋 **2. Agregar resultados resumidos**
+En lugar de traer todos los registros, podemos calcular un resumen y luego usar `collect()` para transferir el resultado.
+
+```r
+# Tarifa promedio por tipo de pago
+tarifa_promedio <- taxi_nyc %>%
+  group_by(payment_type) %>%
+  summarise(avg_fare = mean(fare_amount, na.rm = TRUE)) %>%
+  collect()
+
+# Visualización del resumen
+print(tarifa_promedio)
+```
+
+---
+
+### 📋 **3. Visualización directa de resultados**
+Como Spark no genera gráficos directamente, una estrategia eficaz es:
+
+1. Realizar la transformación en Spark.  
+2. Recoger el resultado en R con `collect()`.  
+3. Utilizar herramientas como `ggplot2` para graficar.  
+
+---
+
+### 📋 **4. Combinar `collect()` con `arrange()`**
+Para obtener un listado ordenado desde Spark.
+
+```r
+# Top 10 viajes más costosos
+viajes_costosos <- taxi_nyc %>%
+  arrange(desc(fare_amount)) %>%
+  select(pickup_datetime, fare_amount) %>%
+  head(10) %>%
+  collect()
+
+print(viajes_costosos)
+```
+
+---
+
+## 🔹 **Buenas Prácticas al usar `collect()`**
+
+✅ **Filtra primero, luego usa `collect()`** → Evita traer datos innecesarios.  
+✅ **Usa `head()` antes de `collect()`** para obtener solo una muestra pequeña.  
+✅ **Asegúrate de no ejecutar `collect()` en datasets masivos** sin aplicar previamente filtros o agregaciones.  
+✅ **Prefiere `compute()`** en lugar de `collect()` si deseas crear un nuevo dataset en Spark sin descargarlo.
+
+---
+
+## 🔹 **Alternativa a `collect()`: `compute()`**
+
+La función **`compute()`** crea un **dataset temporal en Spark**, lo que resulta muy útil cuando se desea almacenar resultados parciales en el entorno distribuido sin traerlos a R.
+
+**Ejemplo:**
+```r
+# Guardar un dataset temporal en Spark
+datos_temporales <- taxi_nyc %>%
+  filter(fare_amount > 50) %>%
+  compute(name = "viajes_costosos")
+
+# Visualizar directamente desde Spark sin descargar
+datos_temporales %>%
+  summarise(total_viajes = n()) %>%
+  collect()
+```
+
+---
+
+## 🔹 **¿Cuándo usar `collect()` y cuándo `compute()`?**
+
+| Característica   | `collect()`                         | `compute()`                         |
+|------------------|-------------------------------------|-------------------------------------|
+| **Función principal** | Extrae los datos al entorno local de R  | Crea un dataset temporal dentro de Spark  |
+| **Uso recomendado** | Para conjuntos de datos **pequeños** o resultados finales | Para conjuntos de datos **grandes** que se seguirán procesando en Spark |
+| **Ventaja clave** | Permite análisis y visualización directa en R  | Mantiene los datos en el entorno distribuido de Spark |
+| **Riesgo** | Puede agotar la memoria si se usa en conjuntos de datos grandes | No sobrecarga la memoria local |
+
+---
+
+> 🧠 **Regla de oro:** Filtra, agrega o resume en Spark antes de usar `collect()` para evitar problemas de memoria. 🚀
+
+---
+
 ## 🔹 **Código de exploración básica inicial en R/Spark**
 
 A continuación, exploramos de forma básica algunos aspectos fundamentales del dataset:
@@ -145,7 +303,7 @@ taxi_nyc %>% head(10) %>% collect()
 
 ---
 
-## 🔹 **Ejercicios iniciales sugeridos a los alumnos**
+## 🔹 **Ejercicios iniciales sugeridos**
 
 Estos ejercicios permiten comenzar la familiarización inicial con el dataset:
 
@@ -168,6 +326,14 @@ taxi_nyc %>% summarise(
 ) %>% collect()
 ```
 
+**Ejercicio 3 – Análisis de Propinas Elevadas**
+**Objetivo:**  
+- Filtra los viajes con propinas (`tip_amount`) superiores a **10 USD**.  
+- Devuelve las 10 propinas más altas junto con la fecha y hora del viaje.  
+
+**Código**
+```r
+```
 
 ---
 
