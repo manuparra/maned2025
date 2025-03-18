@@ -73,28 +73,34 @@ Estos datos necesitan técnicas avanzadas (NLP, análisis de imagen) para extrae
 
 ---
 
-### 🔹 **Ejemplo de código R/Spark de acceso inicial al dataset de taxis (CSV estructurado)**
+### 🔹 **Ejemplo de código R/Spark de acceso inicial al dataset de taxis (PARquet estructurado)**
 
 Este ejemplo muestra cómo leer los datos estructurados (formato CSV) desde Apache Spark con R mediante la librería `sparklyr`:
 
 ```r
+# Lectura inicial del dataset taxis NY (datos PARquet públicos)
 library(sparklyr)
 library(dplyr)
 
+download.file(
+  "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-01.parquet",
+  destfile = "yellow_tripdata_2023-01.parquet",
+  mode = "wb"
+)
+
 # Conectar a Spark
-sc <- spark_connect(master = "local[*]")
+sc <- spark_connect(master = "local")
 
 # Leer el archivo Parquet correctamente
 taxis_nyc <- spark_read_parquet(
   sc, 
   name = "taxis_nyc", 
-  path = "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-01.parquet"
+  path = "yellow_tripdata_2023-01.parquet"
 )
 
 # Visualización de los primeros registros
 taxis_nyc %>%
-  head(5) %>%
-  collect()
+  head(5)
 ```
 
 Este dataset proviene de la **Taxi & Limousine Commission de Nueva York**, disponible públicamente y ampliamente utilizado en análisis Big Data.
