@@ -13,6 +13,17 @@ install.packages("sparklyr")
 sparklyr::spark_install()
 ```
 
+## Installación en Colab
+
+```
+install.packages("sparklyr")
+library(sparklyr)
+spark_available_versions()
+park_install(version = "3.1")
+sc <- spark_connect(master = "local", version = "3.1")
+```
+
+
 ### **📌 Notas sobre la instalación**
 - `sparklyr` permite la conexión entre **R y Apache Spark**.
 - `spark_install()` descarga e instala Spark automáticamente en el sistema.
