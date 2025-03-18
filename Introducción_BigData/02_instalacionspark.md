@@ -13,7 +13,7 @@ install.packages("sparklyr")
 sparklyr::spark_install()
 ```
 
-## Installación en Colab
+## Instalación en Colab
 
 ```
 install.packages("sparklyr")
