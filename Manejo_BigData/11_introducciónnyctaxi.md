@@ -333,7 +333,7 @@ La función **`persist()`** permite almacenar datos en memoria (RAM), en disco o
 # Persistir los datos en memoria para optimizar su reutilización
 taxi_nyc %>%
   filter(trip_distance > 5) %>%
-  persist("MEMORY_AND_DISK")
+  sdf_persist(storage.level = "MEMORY_ONLY")
 ```
 
 ---
