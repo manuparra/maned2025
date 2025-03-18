@@ -23,6 +23,15 @@ park_install(version = "3.1")
 sc <- spark_connect(master = "local", version = "3.1")
 ```
 
+Otro modo de incializar Spark en función CPU y Memoria.
+```
+sc <- spark_connect(master = "local", version = "3.1", config = list(
+                                  spark.cores.local= 2,
+                                  spark.memory.fraction = 0.8, 
+                                  spark.executor.memory = "4G"))
+```
+
+
 
 ### **📌 Notas sobre la instalación**
 - `sparklyr` permite la conexión entre **R y Apache Spark**.
