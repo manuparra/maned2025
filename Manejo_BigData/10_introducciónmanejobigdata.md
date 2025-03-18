@@ -78,23 +78,23 @@ Estos datos necesitan técnicas avanzadas (NLP, análisis de imagen) para extrae
 Este ejemplo muestra cómo leer los datos estructurados (formato CSV) desde Apache Spark con R mediante la librería `sparklyr`:
 
 ```r
-# Librerías requeridas
 library(sparklyr)
 library(dplyr)
 
-# Conexión local a Spark
-sc <- spark_connect(master = "local")
+# Conectar a Spark
+sc <- spark_connect(master = "local[*]")
 
-# Lectura inicial del dataset taxis NY (datos CSV públicos)
-taxis_nyc <- spark_read_csv(
+# Leer el archivo Parquet correctamente
+taxis_nyc <- spark_read_parquet(
   sc, 
   name = "taxis_nyc", 
-  path = "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-01.parquet",
-  infer_schema = TRUE
+  path = "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-01.parquet"
 )
 
-# Ver primeras filas
-taxis_nyc %>% head()
+# Visualización de los primeros registros
+taxis_nyc %>%
+  head(5) %>%
+  collect()
 ```
 
 Este dataset proviene de la **Taxi & Limousine Commission de Nueva York**, disponible públicamente y ampliamente utilizado en análisis Big Data.
