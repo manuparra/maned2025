@@ -62,6 +62,10 @@ La sintaxis de Spark SQL es muy similar a SQL estándar. Ejemplos de consultas b
 
 ---
 
+Funciones que se pueden usar con SparkSQL:
+
+- https://spark.apache.org/docs/latest/api/sql/
+
 ## 🔎 **3.2. Ejemplos básicos con el dataset NYC Taxi Trips**
 
 ### ➤ **Seleccionar columnas específicas**
